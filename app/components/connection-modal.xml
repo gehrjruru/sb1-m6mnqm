@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" shownModally="onShownModally" class="bg-gray-100">
+    <GridLayout rows="*" verticalAlignment="middle">
+        <StackLayout class="p-6 m-4 bg-white rounded-lg">
+            <Label text="Connect to MikroTik Router" class="text-2xl font-bold mb-6 text-center" />
+            
+            <StackLayout class="mb-4">
+                <Label text="Router IP Address" class="text-sm font-medium text-gray-600 mb-1" />
+                <TextField text="{{ config.host }}" 
+                          hint="192.168.1.1"
+                          keyboardType="url" 
+                          autocorrect="false"
+                          autocapitalizationType="none"
+                          focus="{{ onTextFieldFocus }}"
+                          class="input p-3 border rounded-lg bg-gray-50" />
+            </StackLayout>
+            
+            <StackLayout class="mb-4">
+                <Label text="Username" class="text-sm font-medium text-gray-600 mb-1" />
+                <TextField text="{{ config.username }}" 
+                          hint="admin"
+                          autocorrect="false"
+                          autocapitalizationType="none"
+                          focus="{{ onTextFieldFocus }}"
+                          class="input p-3 border rounded-lg bg-gray-50" />
+            </StackLayout>
+            
+            <StackLayout class="mb-4">
+                <Label text="Password" class="text-sm font-medium text-gray-600 mb-1" />
+                <TextField text="{{ config.password }}" 
+                          secure="true"
+                          hint="Password"
+                          autocorrect="false"
+                          autocapitalizationType="none"
+                          focus="{{ onTextFieldFocus }}"
+                          class="input p-3 border rounded-lg bg-gray-50" />
+            </StackLayout>
+
+            <GridLayout columns="auto, *" class="mb-6">
+                <Label col="0" text="Use SSL Connection" class="text-sm font-medium text-gray-600" />
+                <Switch col="1" checked="{{ config.useSsl }}" class="ml-auto" />
+            </GridLayout>
+
+            <GridLayout columns="*, *" class="mt-4">
+                <Button col="0" text="Cancel" 
+                        tap="{{ onCancel }}"
+                        isEnabled="{{ !isLoading }}"
+                        class="m-1 p-3 bg-gray-500 text-white rounded-lg" />
+                <Button col="1" text="{{ isLoading ? 'Connecting...' : 'Connect' }}"
+                        tap="{{ onConnect }}"
+                        isEnabled="{{ !isLoading }}"
+                        class="m-1 p-3 bg-blue-600 text-white rounded-lg" />
+            </GridLayout>
+                
+            <Label text="{{ errorMessage }}" 
+                   class="text-red-500 text-center mt-4" 
+                   visibility="{{ errorMessage ? 'visible' : 'collapsed' }}" 
+                   textWrap="true" />
+
+            <ActivityIndicator busy="{{ isLoading }}" 
+                             visibility="{{ isLoading ? 'visible' : 'collapsed' }}"
+                             class="mt-4" />
+        </StackLayout>
+    </GridLayout>
+</Page>

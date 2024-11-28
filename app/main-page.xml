@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" 
+      navigatingTo="navigatingTo"
+      loaded="onLoaded"
+      class="bg-gray-100">
+    <ActionBar title="MikroTik User Manager" class="bg-blue-600 text-white">
+        <ActionItem tap="{{ showConnectionModal }}" 
+                   ios.position="right" 
+                   android.position="actionBar">
+            <Label text="{{ isConnected ? '✓ Connected' : '⚠ Connect' }}" 
+                   class="{{ isConnected ? 'text-green-500' : 'text-yellow-500' }}" />
+        </ActionItem>
+    </ActionBar>
+    
+    <GridLayout rows="auto, *">
+        <!-- Connection Status -->
+        <StackLayout row="0" class="p-4" visibility="{{ !isConnected ? 'visible' : 'collapsed' }}">
+            <Label text="Not connected to MikroTik router" class="text-xl text-center text-gray-700 mb-2" />
+            <Button text="Connect to Router" tap="{{ showConnectionModal }}" 
+                    class="bg-blue-600 text-white rounded-lg p-4 text-lg" />
+        </StackLayout>
+
+        <!-- Connected Content -->
+        <GridLayout row="1" rows="*, auto" visibility="{{ isConnected ? 'visible' : 'collapsed' }}">
+            <!-- Package Grid -->
+            <GridLayout rows="auto, *">
+                <Label row="0" text="Available Packages" class="p-4 text-xl font-bold text-gray-800" />
+                <GridLayout row="1" columns="*, *" class="p-2">
+                    <ListView col="0" items="{{ packages }}" itemTap="{{ onPackageSelect }}" class="bg-gray-100">
+                        <ListView.itemTemplate>
+                            <GridLayout class="p-3 bg-white m-1 rounded-lg">
+                                <StackLayout>
+                                    <Label text="{{ name }}" class="text-lg font-bold text-gray-800" />
+                                    <Label text="{{ duration }}" class="text-sm text-gray-600" />
+                                    <Label text="{{ dataLimit }}" class="text-sm text-gray-600" />
+                                    <Label text="{{ speedLimit }}" class="text-sm text-gray-600" />
+                                    <Button text="Generate" tap="{{ $parents['ListView'].onPackageSelect }}" 
+                                            class="bg-blue-600 text-white p-2 rounded-lg mt-2" />
+                                </StackLayout>
+                            </GridLayout>
+                        </ListView.itemTemplate>
+                    </ListView>
+                </GridLayout>
+            </GridLayout>
+
+            <!-- Voucher Display -->
+            <StackLayout row="1" class="bg-white p-6 border-t border-gray-200" 
+                        visibility="{{ currentVoucher ? 'visible' : 'collapsed' }}">
+                <Label text="Generated Access Code" class="text-lg font-bold text-gray-800 mb-2" />
+                <GridLayout columns="*, auto" class="bg-gray-100 p-4 rounded-lg">
+                    <Label col="0" text="{{ currentVoucher.code }}" 
+                           class="text-xl text-blue-600 font-mono" />
+                    <Button col="1" text="Copy" tap="{{ onCopyVoucher }}" 
+                            class="bg-blue-600 text-white px-4 rounded-lg" />
+                </GridLayout>
+                <GridLayout columns="*, *" class="mt-4">
+                    <Label col="0" text="{{ 'Valid for: ' + currentVoucher.package.duration }}" 
+                           class="text-sm text-gray-600" />
+                    <Button col="1" text="Share" tap="{{ onShareVoucher }}" 
+                            class="bg-green-600 text-white rounded-lg" />
+                </GridLayout>
+            </StackLayout>
+        </GridLayout>
+    </GridLayout>
+</Page>

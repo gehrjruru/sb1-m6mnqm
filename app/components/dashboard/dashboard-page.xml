@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GridLayout rows="auto, *" class="bg-gray-100">
+    <GridLayout row="0" columns="*, auto" class="bg-white p-4 border-b">
+        <StackLayout col="0">
+            <Label text="{{ routerInfo }}" class="text-sm text-gray-600" />
+            <Label text="{{ connectionStatus }}" class="text-xs" class="{{ isConnected ? 'text-green-500' : 'text-red-500' }}" />
+        </StackLayout>
+        <Button col="1" text="Disconnect" tap="{{ disconnect }}" class="bg-red-500 text-white text-sm p-2 rounded" />
+    </GridLayout>
+
+    <TabView row="1" selectedIndex="{{ selectedTabIndex }}" class="bg-white">
+        <TabViewItem title="Packages">
+            <GridLayout rows="auto, *">
+                <Label row="0" text="Available Packages" class="text-lg font-bold p-4" />
+                <ListView row="1" items="{{ packages }}" class="list-reset">
+                    <ListView.itemTemplate>
+                        <GridLayout columns="*, auto" class="p-4 border-b">
+                            <StackLayout col="0">
+                                <Label text="{{ name }}" class="font-semibold" />
+                                <Label text="{{ 'Speed: ' + speedLimit }}" class="text-sm text-gray-600" />
+                                <Label text="{{ 'Data: ' + dataLimit }}" class="text-sm text-gray-600" />
+                                <Label text="{{ 'Duration: ' + duration }}" class="text-sm text-gray-600" />
+                            </StackLayout>
+                            <Label col="1" text="{{ price + ' USD' }}" class="text-blue-600 font-bold" />
+                        </GridLayout>
+                    </ListView.itemTemplate>
+                </ListView>
+            </GridLayout>
+        </TabViewItem>
+
+        <TabViewItem title="Active Users">
+            <GridLayout rows="auto, *">
+                <SearchBar row="0" hint="Search users..." text="{{ searchQuery }}" />
+                <ListView row="1" items="{{ activeUsers }}" class="list-reset">
+                    <ListView.itemTemplate>
+                        <GridLayout columns="*, auto" class="p-4 border-b">
+                            <StackLayout col="0">
+                                <Label text="{{ username }}" class="font-semibold" />
+                                <Label text="{{ 'IP: ' + ipAddress }}" class="text-sm text-gray-600" />
+                                <Label text="{{ 'Connected: ' + uptime }}" class="text-sm text-gray-600" />
+                            </StackLayout>
+                            <Button col="1" text="Disconnect" tap="{{ $parents['ListView'].onDisconnectUser }}" 
+                                    class="bg-red-500 text-white text-sm p-2 rounded" />
+                        </GridLayout>
+                    </ListView.itemTemplate>
+                </ListView>
+            </GridLayout>
+        </TabViewItem>
+
+        <TabViewItem title="Statistics">
+            <ScrollView>
+                <StackLayout class="p-4">
+                    <GridLayout rows="auto, auto" columns="*, *" class="bg-white rounded-lg shadow p-4 mb-4">
+                        <Label row="0" col="0" text="Total Users" class="text-gray-600" />
+                        <Label row="1" col="0" text="{{ stats.totalUsers }}" class="text-2xl font-bold" />
+                        <Label row="0" col="1" text="Active Users" class="text-gray-600" />
+                        <Label row="1" col="1" text="{{ stats.activeUsers }}" class="text-2xl font-bold text-green-500" />
+                    </GridLayout>
+
+                    <StackLayout class="bg-white rounded-lg shadow p-4 mb-4">
+                        <Label text="Bandwidth Usage" class="text-lg font-bold mb-2" />
+                        <GridLayout rows="auto, auto" columns="*, *" class="mb-2">
+                            <Label row="0" col="0" text="Download" class="text-gray-600" />
+                            <Label row="0" col="1" text="{{ stats.downloadUsage }}" class="text-right" />
+                            <Label row="1" col="0" text="Upload" class="text-gray-600" />
+                            <Label row="1" col="1" text="{{ stats.uploadUsage }}" class="text-right" />
+                        </GridLayout>
+                    </StackLayout>
+                </StackLayout>
+            </ScrollView>
+        </TabViewItem>
+    </TabView>
+</GridLayout>
